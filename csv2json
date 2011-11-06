@@ -1,0 +1,16 @@
+awk -v batch_size=$BATCH_SIZE 'BEGIN { FS = ","} ;END { print "]"}
+{
+
+  if (FNR > 1) {
+    if ( (FNR-1) % batch_size == 1) {printf "["}
+    else {printf ","}
+    {printf "{"}
+    {for(i=1;i<=NF;i++){if(i != 1) {printf ","} {printf "\"%s\":\"%s\" ",header[i], $i}}}
+    {printf "}"}
+    if ( (FNR-1) % batch_size == 0) {print "]"}
+  }
+  else{
+    {for(i=1;i<=NF;i++){header[i]=$i}}
+  }
+}' $1
+
